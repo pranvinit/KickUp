@@ -9,6 +9,8 @@ const {
   getAllUsers,
   getSingleUser,
   showCurrentUser,
+  updateUser,
+  deleteUser,
 } = require("../controllers/userController");
 
 // only admin can view all users
@@ -16,10 +18,14 @@ router.get(
   "/",
   authenticateUser,
   // add admin strategy
-  authorizePermissions(["user", "admin"]),
+  authorizePermissions("user", "admin"),
   getAllUsers
 );
 router.get("/showMe", authenticateUser, showCurrentUser);
-router.get("/:id", authenticateUser, getSingleUser);
+router
+  .route("/:id")
+  .get(authenticateUser, getSingleUser)
+  .patch(authenticateUser, updateUser)
+  .delete(authenticateUser, deleteUser);
 
 module.exports = router;

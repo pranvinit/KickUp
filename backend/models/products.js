@@ -4,36 +4,56 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
-      // define association here
+      Product.hasMany(models.Review, {
+        foreignKey: {
+          name: "product",
+          type: DataTypes.UUID,
+        },
+        sourceKey: "product_id",
+        as: "reviews",
+      });
     }
   }
   Product.init(
     {
-      user_id: {
+      product_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        unique: true,
       },
-      username: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        validate: {
+          len: [5, 50],
+        },
+      },
+      price: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+          min: 0,
+        },
+      },
+      offer: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [5, 50],
+        },
+      },
+      images: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        defaultValue: [],
+      },
+      design: {
+        type: DataTypes.JSON,
+        allowNull: false,
+      },
+      seller_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
         validate: {
           len: [2, 50],
-        },
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          isEmail: true,
-        },
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          len: [6, 255],
         },
       },
     },

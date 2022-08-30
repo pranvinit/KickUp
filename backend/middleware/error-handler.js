@@ -6,6 +6,7 @@ const errorHandlerMiddleWare = (err, req, res, next) => {
     message: err.message || "Something went wrong try again later",
     statusCode: err.StatusCodes || StatusCodes.INTERNAL_SERVER_ERROR,
   };
+  console.log(err);
 
   return res.status(customError.statusCode).json({ msg: customError.message });
 };

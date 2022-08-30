@@ -14,6 +14,8 @@ const errorHandlerMiddleWare = require("./middleware/error-handler");
 // Routes imports
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
+const productRouter = require("./routes/productRoutes");
+const reviewRouter = require("./routes/reviewRoutes");
 
 const connectDB = require("./db/connect");
 
@@ -30,6 +32,8 @@ app.get("/api", async (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
+app.use("/api/reviews", reviewRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleWare);
