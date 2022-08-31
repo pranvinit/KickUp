@@ -1,10 +1,13 @@
-const { User, Review } = require("../models");
+const { User, Review, Order } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
 const getAllUsers = async (req, res) => {
   const users = await User.findAll({
-    include: { model: Review, as: "reviews" },
+    include: [
+      { model: Review, as: "reviews" },
+      { model: Order, as: "orders" },
+    ],
   });
   res.status(StatusCodes.OK).json({ users, nbHits: users.length });
 };
@@ -13,7 +16,10 @@ const getSingleUser = async (req, res) => {
   const { id: userId } = req.params;
   const user = await User.findOne({
     where: { user_id: userId },
-    include: { model: Review, as: "reviews" },
+    include: [
+      { model: Review, as: "reviews" },
+      { model: Order, as: "orders" },
+    ],
   });
   if (!user) {
     throw new CustomError.NotFoundError("User not found.");
@@ -22,21 +28,20 @@ const getSingleUser = async (req, res) => {
 };
 
 const showCurrentUser = async (req, res) => {
-  const { userId } = req.user;
-  const user = await User.findOne({
-    where: { user_id: userId },
-    include: { model: Review, as: "reviews" },
-  });
-  if (!user) {
-    throw new CustomError.NotFoundError("User not found.");
-  }
+  const user = req.user;
   res.status(StatusCodes.OK).json({ user });
 };
 
 const updateUser = async (req, res) => {
   const { userId } = req.user;
 
-  const user = await User.findOne({ where: { user_id: userId } });
+  const user = await User.findOne({
+    where: { user_id: userId },
+    include: [
+      { model: Review, as: "reviews" },
+      { model: Order, as: "orders" },
+    ],
+  });
   if (!user) {
     throw new CustomError.NotFoundError("User not found.");
   }

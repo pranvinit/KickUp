@@ -6,14 +6,14 @@ const authenticateUser = async (req, res, next) => {
   // as we have attached signed cookie
   const token = req.signedCookies.token;
   if (!token) {
-    throw new CustomError.UnAuthenticatedError("Authentication Invalid.");
+    throw new CustomError.UnAuthenticatedError("User is not authorized.");
   }
   try {
-    const { name, userId, role } = verifyJWT(token);
-    req.user = { name, userId, role };
+    const { name, userId, role, cartItems, orders, reviews } = verifyJWT(token);
+    req.user = { name, userId, role, cartItems, orders, reviews };
     next();
   } catch (error) {
-    throw new CustomError.UnAuthenticatedError("Authentication Invalid.");
+    throw new CustomError.UnAuthenticatedError("User authorization failed.");
   }
 };
 // using a wrapper function that returns a callback so we can accept parameters with rest operator

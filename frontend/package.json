@@ -13,6 +13,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-spinner-material": "^1.4.0",
+    "react-toastify": "^9.0.8",
     "sass": "^1.54.7",
     "web-vitals": "^2.1.4"
   },

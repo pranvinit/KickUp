@@ -1,0 +1,76 @@
+@import "../../partials/variables";
+
+.register {
+  height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .box {
+    padding: 30px;
+    width: 300px;
+    height: 450px;
+    box-shadow: $primary-shadow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      input {
+        border: 1px solid transparent;
+        outline: none;
+        padding: 10px;
+        font-size: 1.05rem;
+        background-color: rgb(244, 244, 244);
+
+        &:focus {
+          border-color: #000;
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      button {
+        border: none;
+        padding-block: 10px;
+        font-size: 1.1rem;
+        color: #fff;
+        background-color: $blue-btn;
+        cursor: pointer;
+        transition: 0.2ms;
+
+        &:disabled {
+          cursor: not-allowed;
+        }
+        &:hover {
+          background-color: darken($color: $blue-btn, $amount: 20%);
+        }
+      }
+      .cancel {
+        background-color: $red-btn;
+        &:hover {
+          background-color: darken($color: $red-btn, $amount: 20%);
+        }
+      }
+    }
+
+    .create span {
+      padding-right: 5px;
+    }
+  }
+}

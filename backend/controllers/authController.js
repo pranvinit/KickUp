@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Review, Order } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 const { createTokenUser, attachCookiesToResponse } = require("../utils");
@@ -12,7 +12,7 @@ const register = async (req, res) => {
   const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
 
-  return res.status(StatusCodes.CREATED).json({ user });
+  return res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 
 const login = async (req, res) => {
@@ -20,7 +20,13 @@ const login = async (req, res) => {
   if (!email || !password) {
     throw new CustomError.BadRequestError("Please provide email and password.");
   }
-  const user = await User.findOne({ where: { email: email } });
+  const user = await User.findOne({
+    where: { email: email },
+    include: [
+      { model: Review, as: "reviews" },
+      { model: Order, as: "orders" },
+    ],
+  });
   if (!user) {
     throw new CustomError.UnAuthenticatedError("Invalid Credentials.");
   }

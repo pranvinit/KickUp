@@ -1,0 +1,67 @@
+@import "../../partials/variables";
+
+.navbar {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: fixed;
+
+  .logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    img {
+      width: 50px;
+    }
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+
+    .item {
+      text-decoration: none;
+      color: #000;
+      font-size: 1.2rem;
+      &.active {
+        border-bottom: 2px solid #000;
+      }
+    }
+  }
+  .center {
+    flex: 3;
+  }
+  .right {
+    flex: 1;
+    gap: 20px;
+    align-items: center;
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      img {
+        width: 30px;
+      }
+
+      span {
+        font-size: 1.1rem;
+      }
+    }
+
+    .logout {
+      font-size: 1.2rem;
+      padding-bottom: 3px;
+      cursor: pointer;
+
+      &:hover {
+        color: $danger-red;
+      }
+    }
+  }
+}

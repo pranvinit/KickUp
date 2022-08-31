@@ -1,5 +1,6 @@
 import { useReducer, createContext } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 // action creators import
 import {
@@ -40,9 +41,11 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const res = await axios.post("/api/auth/login", { email, password });
       dispatch(AuthSuccess(res.data.user));
+
       localStorage.setItem("user", JSON.stringify(res.data.user));
     } catch (err) {
       dispatch(AuthError(err.response.data));
+      toast.error(err.response.data.message);
     }
   };
 
@@ -50,10 +53,12 @@ export const AuthContextProvider = ({ children }) => {
     dispatch(AuthStart());
     try {
       const res = await axios.post("/api/auth/register", body);
+
       dispatch(AuthSuccess(res.data.user));
       localStorage.setItem("user", JSON.stringify(res.data.user));
     } catch (err) {
       dispatch(AuthError(err.response.data));
+      toast.error(err.response.data.message);
     }
   };
 
