@@ -1,0 +1,9 @@
+@import "../../partials/variables";
+
+.cart {
+  flex: 1;
+  box-shadow: $primary-shadow;
+  .wrapper {
+    padding: 30px;
+  }
+}

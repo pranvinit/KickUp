@@ -6,6 +6,9 @@
   display: flex;
   align-items: center;
   position: fixed;
+  background-color: #fff;
+  z-index: 999;
+  box-shadow: $soft-shadow;
 
   .logo {
     flex: 1;
@@ -16,7 +19,7 @@
     }
   }
 
-  .list {
+  .navlist {
     margin: 0;
     padding: 0;
     list-style: none;

@@ -1,0 +1,76 @@
+@import "../../partials/variables";
+
+.list {
+  flex: 2;
+  box-shadow: $primary-shadow;
+  min-height: 600px;
+
+  .wrapper {
+    padding: 30px;
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        text-transform: uppercase;
+      }
+
+      .topright {
+        display: flex;
+        gap: 30px;
+
+        .search {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .searchIconWrapper {
+            width: 40px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            &.active {
+              background-color: $very-light-grey;
+            }
+            img {
+              width: 60%;
+            }
+          }
+          input {
+            width: 150px;
+            padding: 5px;
+            border: 2px solid #000;
+            font-size: 1.2rem;
+          }
+        }
+
+        .sort {
+          border: 2px solid #000;
+          padding: 5px 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .items {
+      margin-top: 30px;
+
+      display: grid;
+      grid-template: repeat(auto-fit, 250px) / repeat(
+          auto-fit,
+          minmax(150px, 1fr)
+        );
+      grid-auto-flow: row;
+      grid-auto-rows: 250px;
+      gap: 30px;
+    }
+  }
+}

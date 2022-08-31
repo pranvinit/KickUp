@@ -12,6 +12,7 @@ const {
   getAllProducts,
   getSingleProduct,
   addToCart,
+  removeFromCart,
 } = require("../controllers/productController");
 
 router
@@ -23,9 +24,13 @@ router
   );
 
 router
+  .route("/cart/:id")
+  .post(authenticateUser, addToCart)
+  .delete(authenticateUser, removeFromCart);
+
+router
   .route("/:id")
   .get(getSingleProduct)
-  .post(authenticateUser, addToCart)
   .patch(authenticateUser, updateProduct)
   .delete(authenticateUser, deleteProduct);
 

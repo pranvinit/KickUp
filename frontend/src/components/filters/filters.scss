@@ -1,0 +1,96 @@
+@import "../../partials/variables";
+
+.filters {
+  flex: 1;
+  height: max-content;
+  position: sticky;
+  top: 100px;
+  left: 30px;
+  box-shadow: $primary-shadow;
+
+  .wrapper {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      img {
+        width: 30px;
+      }
+    }
+
+    .cost,
+    .color,
+    .designTemplates,
+    .type {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .field {
+        display: flex;
+        gap: 10px;
+        label {
+          cursor: pointer;
+        }
+        input[type="checkbox"] {
+          transform: scale(1.5);
+          cursor: pointer;
+        }
+      }
+    }
+
+    .color {
+      .container {
+        display: flex;
+        gap: 15px;
+
+        span {
+          width: 30px;
+          aspect-ratio: 1;
+          cursor: pointer;
+
+          &:nth-of-type(1) {
+            background-color: red;
+          }
+          &:nth-of-type(2) {
+            background-color: blue;
+          }
+          &:nth-of-type(3) {
+            background-color: yellow;
+          }
+          &:nth-of-type(4) {
+            background-color: green;
+          }
+          &:nth-of-type(5) {
+            background-color: purple;
+          }
+        }
+      }
+    }
+
+    button {
+      border: 2px solid #000;
+      padding-block: 5px 10px;
+      font-size: 1.1rem;
+      background-color: #fff;
+      color: #000;
+      transition: 0.2ms;
+      cursor: pointer;
+
+      &:hover {
+        color: #fff;
+        background-color: #000;
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@ const Navbar = () => {
         />
       </div>
       {user && (
-        <ul className="list center">
+        <ul className="navlist center">
           <li>
             <NavLink className="item" activeclassname="active" to="/">
               Home
@@ -54,7 +54,7 @@ const Navbar = () => {
           </li>
         </ul>
       )}
-      <ul className="list right">
+      <ul className="navlist right">
         {user && (
           <li className="profile">
             <img src="assets/person.png" alt="profile" />

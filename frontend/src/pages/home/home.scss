@@ -52,10 +52,11 @@
 
     img {
       width: 60%;
-      animation: bounce 2s ease-out infinite alternate-reverse;
+      transform: translateY(-50px);
+      animation: bounce 2s linear infinite alternate-reverse;
 
       @keyframes bounce {
-        from {
+        to {
           transform: translateY(50px);
         }
       }
