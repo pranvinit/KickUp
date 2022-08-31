@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         sourceKey: "user_id",
         as: "reviews",
+        onDelete: "CASCADE",
       });
     }
   }
@@ -45,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
           len: [6, 255],
         },
       },
+      cart_items: { type: DataTypes.ARRAY(DataTypes.UUID), defaultValue: [] },
       role: {
         type: DataTypes.ENUM("user", "seller", "admin"),
         defaultValue: "user",

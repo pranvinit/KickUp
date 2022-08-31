@@ -1,4 +1,5 @@
-const { Product, Review } = require("../models");
+const { Op } = require("sequelize");
+const { Product, Review, Sequelize } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
@@ -9,9 +10,40 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
+  const { price, color, designTemplate, type } = req.query;
+
+  const whereOptions = {};
+
+  if (price) {
+    const [ll, ul] = price.split("-").map((i) => parseInt(i));
+    whereOptions.price = { [Op.between]: [ll, ul] };
+  }
+  if (color) whereOptions.color = color;
+  if (type) whereOptions.type = type;
+
   const products = await Product.findAll({
-    include: { model: Review, as: "reviews" },
+    where: whereOptions,
+    include: { model: Review, as: "reviews", attributes: [] },
+    attributes: {
+      include: [
+        [
+          Sequelize.fn("AVG", Sequelize.col("reviews.rating")),
+          "average_rating",
+        ],
+      ],
+    },
+    group: ["Product.id"],
   });
+
+  if (designTemplate) {
+    const filteredProducts = products.filter(
+      (item) => Object.keys(item.design).length >= parseInt(designTemplate)
+    );
+    return res
+      .status(StatusCodes.OK)
+      .json({ products: filteredProducts, nbHits: filteredProducts.length });
+  }
+
   res.status(StatusCodes.OK).json({ products, nbHits: products.length });
 };
 
@@ -19,7 +51,16 @@ const getSingleProduct = async (req, res) => {
   const { id: productId } = req.params;
   const product = await Product.findOne({
     where: { product_id: productId },
-    include: { model: Review, as: "reviews" },
+    include: { model: Review, as: "reviews", attributes: [] },
+    attributes: {
+      include: [
+        [
+          Sequelize.fn("AVG", Sequelize.col("reviews.rating")),
+          "average_rating",
+        ],
+      ],
+    },
+    group: ["Product.id"],
   });
   if (!product) {
     throw new CustomError.NotFoundError("Product not found.");

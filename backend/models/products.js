@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         sourceKey: "product_id",
         as: "reviews",
+        onDelete: "CASCADE",
       });
     }
   }
@@ -47,6 +48,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       design: {
         type: DataTypes.JSON,
+        allowNull: false,
+      },
+      color: {
+        type: DataTypes.ENUM("blue", "green", "purple", "red", "yellow"),
+        allowNull: false,
+      },
+      type: {
+        type: DataTypes.ENUM("loafers", "sneakers"),
         allowNull: false,
       },
       seller_name: {

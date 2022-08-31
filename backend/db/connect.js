@@ -1,7 +1,7 @@
 const { sequelize } = require("../models");
 
 const connectDB = async () => {
-  await sequelize.sync();
+  await sequelize.sync({ force: true });
   return sequelize.authenticate();
 };
 

@@ -8,6 +8,7 @@ const getAllUsers = async (req, res) => {
   });
   res.status(StatusCodes.OK).json({ users, nbHits: users.length });
 };
+
 const getSingleUser = async (req, res) => {
   const { id: userId } = req.params;
   const user = await User.findOne({
@@ -19,8 +20,17 @@ const getSingleUser = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ user });
 };
+
 const showCurrentUser = async (req, res) => {
-  res.status(StatusCodes.OK).json({ user: req.user });
+  const { userId } = req.user;
+  const user = await User.findOne({
+    where: { user_id: userId },
+    include: { model: Review, as: "reviews" },
+  });
+  if (!user) {
+    throw new CustomError.NotFoundError("User not found.");
+  }
+  res.status(StatusCodes.OK).json({ user });
 };
 
 const updateUser = async (req, res) => {
