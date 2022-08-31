@@ -25,6 +25,7 @@ import { AuthContext } from "./context/AuthContext";
 
 // Components imports
 import Navbar from "./components/navbar/Navbar";
+import ItemView from "./pages/itemView/ItemView";
 
 const ProtectedRoute = ({ user }) => {
   return user ? <Outlet /> : <Navigate to="/login" />;
@@ -49,6 +50,7 @@ function App() {
               <Route path="/journey" element={<Journey />} />
               <Route path="/team" element={<Team />} />
               <Route path="/store" element={<Store />} />
+              <Route path="/store/:id" element={<ItemView />} />
               <Route path="/contact" element={<Contact />} />
             </Route>
             <Route path="/register" element={<Register />} />

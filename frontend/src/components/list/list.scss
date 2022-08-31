@@ -3,7 +3,9 @@
 .list {
   flex: 2;
   box-shadow: $primary-shadow;
+  height: fit-content;
   min-height: 600px;
+  margin-bottom: 20px;
 
   .wrapper {
     padding: 30px;
@@ -71,6 +73,11 @@
       grid-auto-flow: row;
       grid-auto-rows: 250px;
       gap: 30px;
+
+      .link-reset {
+        text-decoration: none;
+        color: #000;
+      }
     }
   }
 }

@@ -1,0 +1,10 @@
+.itemView {
+  display: flex;
+  min-height: calc(100vh - 80px);
+  padding-inline: 30px;
+  margin-top: 50px;
+
+  .itemDetails {
+    flex: 3;
+  }
+}

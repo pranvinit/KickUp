@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="logo">
         <img
           onClick={() => window.location.replace("/")}
-          src="assets/logo.png"
+          src="/assets/logo.png"
           alt="logo"
         />
       </div>
@@ -57,7 +57,7 @@ const Navbar = () => {
       <ul className="navlist right">
         {user && (
           <li className="profile">
-            <img src="assets/person.png" alt="profile" />
+            <img src="/assets/person.png" alt="profile" />
             <span>{user.name}</span>
           </li>
         )}

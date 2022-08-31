@@ -14,7 +14,7 @@ const Item = ({ item }) => {
             {Array(Math.round(item.average_rating))
               .fill()
               .map((i) => (
-                <img key={i} src="assets/star.png" alt="star" />
+                <img key={i} src="/assets/star.png" alt="star" />
               ))}
           </div>
         </div>

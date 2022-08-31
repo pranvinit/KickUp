@@ -10,7 +10,7 @@ const Filters = () => {
       <div className="wrapper">
         <div className="top">
           <h2>Filters</h2>
-          <img src="assets/filter.png" alt="filter" />
+          <img src="/assets/filter.png" alt="filter" />
         </div>
         <div className="cost">
           <h2>Cost</h2>

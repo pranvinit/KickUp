@@ -4,6 +4,7 @@ import "./list.scss";
 
 // importing mock data
 import { ITEMS } from "../../mockData";
+import { Link } from "react-router-dom";
 
 const List = () => {
   const [data, setData] = useState(ITEMS);
@@ -37,7 +38,7 @@ const List = () => {
                 }`}
               >
                 <img
-                  src="assets/search.png"
+                  src="/assets/search.png"
                   alt="search"
                   onClick={() => setSearchActive(!searchActive)}
                 />
@@ -48,7 +49,9 @@ const List = () => {
         </div>
         <div className="items">
           {data.map((item) => (
-            <Item item={item} />
+            <Link className="link-reset" to={`/store/${item.product_id}`}>
+              <Item item={item} />
+            </Link>
           ))}
         </div>
       </div>

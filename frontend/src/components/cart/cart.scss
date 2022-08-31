@@ -1,9 +1,112 @@
 @import "../../partials/variables";
 
+// changing default scrollbar style
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b3b3b3;
+  border-radius: 10px;
+}
+
 .cart {
   flex: 1;
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+  position: sticky;
+  top: 100px;
+  right: 30px;
   box-shadow: $primary-shadow;
   .wrapper {
-    padding: 30px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      img {
+        width: 30px;
+      }
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .cartItem {
+        height: 120px;
+        display: flex;
+        gap: 10px;
+
+        .imgWrapper {
+          position: relative;
+          img:nth-child(1) {
+            width: 150px;
+            height: 100%;
+            object-fit: cover;
+          }
+          img:nth-child(2) {
+            width: 20px;
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .details {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+
+        .info {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          img {
+            width: 20px;
+          }
+          span {
+            font-weight: 600;
+          }
+        }
+      }
+
+      button {
+        padding-block: 5px;
+        width: 150px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+        background-color: #000;
+        color: #fff;
+        transition: 0.2ms;
+        cursor: pointer;
+
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+    }
   }
 }
