@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Product, Review, Sequelize } = require("../models");
+const { User, Product, Review, Sequelize } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
@@ -68,6 +68,25 @@ const getSingleProduct = async (req, res) => {
   res.status(StatusCodes.OK).json({ product });
 };
 
+const addToCart = async (req, res) => {
+  const { userId } = req.user;
+  const { id: productId } = req.params;
+
+  const user = await User.findOne({ where: { user_id: userId } });
+  if (!user) {
+    throw new CustomError.NotFoundError("User not found.");
+  }
+
+  const isInCart = user.cart_items.includes(productId);
+  if (isInCart) {
+    throw new CustomError.BadRequestError("Product already in cart.");
+  }
+  user.set({ cart_items: [...user.cart_items, productId] });
+  const updatedUser = await user.save();
+
+  res.status(StatusCodes.OK).json({ user: updatedUser });
+};
+
 const updateProduct = async (req, res) => {
   const { id: productId } = req.params;
 
@@ -97,4 +116,5 @@ module.exports = {
   deleteProduct,
   getAllProducts,
   getSingleProduct,
+  addToCart,
 };

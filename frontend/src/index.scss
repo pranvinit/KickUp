@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Gobold";
+  src: url(./static/fonts/Gobold_Regular.otf) format("opentype");
+}
+@font-face {
+  font-family: "Product Sans";
+  src: url(./static/fonts/Product_Sans.ttf) format("truetype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Product Sans;
+  font-weight: 400;
+}
