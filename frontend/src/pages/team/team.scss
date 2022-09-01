@@ -1,0 +1,31 @@
+@import "../../partials/variables";
+
+.team {
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+
+  &::before,
+  &::after {
+    content: "";
+    width: 100%;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(calc(-50% + 30px));
+    background-color: $light-grey;
+    z-index: -999;
+  }
+  &::after {
+    transform: translateY(calc(-50% - 30px));
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+}

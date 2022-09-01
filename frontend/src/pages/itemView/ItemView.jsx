@@ -1,29 +1,35 @@
 import "./itemView.scss";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Cart from "../../components/cart/Cart";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Spinner from "react-spinner-material";
 
-import { ITEMS } from "../../mockData";
+// import { ITEMS } from "../../mockData";
 
 import RatingComponent from "react-rating";
 
 import Rating from "../../components/rating/Rating";
+import { ITEMS } from "../../mockData";
 
 const ItemView = () => {
+  const navigate = useNavigate();
   const { id: productId } = useParams();
   const [loading, setLoading] = useState(false);
-  const [item, setItem] = useState(ITEMS[0]);
+  const [item, setItem] = useState(null);
 
   const [activeImgIndex, setActiveImgIndex] = useState(0);
-  const [designTemplate, setDesignTemplate] = useState(item.design);
+  const [designTemplate, setDesignTemplate] = useState(item?.design || {});
 
   const fetchItem = async () => {
     setLoading(true);
     try {
       const res = await axios.get(`/api/products/${productId}`);
       setItem(res.data.product);
+      console.log(res.data.product);
+      console.log(item);
+
       setLoading(false);
     } catch (e) {
       setLoading(false);
@@ -42,23 +48,43 @@ const ItemView = () => {
     return !isNaN(option);
   };
 
+  const handleShare = (data) => {
+    navigator.share(data);
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      await axios.post("/api/products/cart", { id: item.product_id });
+      toast.success("Item added to cart.");
+    } catch (e) {
+      toast.error(e.response.data.message);
+    }
+  };
+
   useEffect(() => {
-    // fetchItem();
+    fetchItem();
   }, []);
 
-  if (loading || !item) {
+  if (!item || loading) {
     return (
-      <div className="loader">
-        <h1>Loading...</h1>
+      <div className="list">
+        <div className="wrapper wrapper-loader">
+          <Spinner />
+        </div>
       </div>
     );
   }
+
   return (
     <div className="itemView">
       <div className="itemDetails">
         <div className="wrapper">
           <div className="top">
-            <img src="/assets/back.png" alt="back" />
+            <img
+              onClick={() => navigate(-1)}
+              src="/assets/back.png"
+              alt="back"
+            />
             <h3>Your Design Space</h3>
           </div>
           <div className="bottom">
@@ -85,7 +111,12 @@ const ItemView = () => {
             <div className="right">
               <div className="name">
                 <h2>{item.name}</h2>
-                <h3>by{item.seller_name}</h3>
+                <h3>
+                  {JSON.stringify(designTemplate) ===
+                  JSON.stringify(item.design)
+                    ? `By ${item.seller_name}`
+                    : `By ${item.seller_name} and you`}
+                </h3>
               </div>
               {!!item.average_rating && (
                 <div className="reviews">
@@ -240,53 +271,52 @@ const ItemView = () => {
                       </div>
                     </div>
                   )}
-                  {hasDesignOption(
-                    item.design.sole && (
-                      <div className="do sole">
-                        <h3>Sole</h3>
-                        <div className="container">
-                          <div onClick={() => handleDesignChange("sole", 0)}>
-                            {designTemplate.sole === 0 && (
-                              <img
-                                src="/assets/designs/checkbox.png"
-                                alt="checkbox"
-                                className="checkbox"
-                              />
-                            )}
+                  {hasDesignOption(item.design.sole) && (
+                    <div className="do sole">
+                      <h3>Sole</h3>
+                      <div className="container">
+                        <div onClick={() => handleDesignChange("sole", 0)}>
+                          {designTemplate.sole === 0 && (
                             <img
-                              src="/assets/designs/white-square.png"
-                              alt="option one"
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
                             />
-                          </div>
-                          <div onClick={() => handleDesignChange("sole", 1)}>
-                            {designTemplate.sole === 1 && (
-                              <img
-                                src="/assets/designs/checkbox.png"
-                                alt="checkbox"
-                                className="checkbox"
-                              />
-                            )}
+                          )}
+                          <img
+                            src="/assets/designs/black-square.png"
+                            alt="option one"
+                          />
+                        </div>
+                        <div onClick={() => handleDesignChange("sole", 1)}>
+                          {designTemplate.sole === 1 && (
                             <img
-                              src="/assets/designs/blue-square.png"
-                              alt="option two"
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
                             />
-                          </div>
-                          <div onClick={() => handleDesignChange("sole", 2)}>
-                            {designTemplate.sole === 2 && (
-                              <img
-                                src="/assets/designs/checkbox.png"
-                                alt="checkbox"
-                                className="checkbox"
-                              />
-                            )}
+                          )}
+                          <img
+                            src="/assets/designs/blue-square.png"
+                            alt="option two"
+                          />
+                        </div>
+                        <div onClick={() => handleDesignChange("sole", 2)}>
+                          {designTemplate.sole === 2 && (
                             <img
-                              src="/assets/designs/black-square.png"
-                              alt="option three"
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
                             />
-                          </div>
+                          )}
+                          <img
+                            src="/assets/designs/white-square.png"
+                            alt="option three"
+                            className="soleWhite"
+                          />
                         </div>
                       </div>
-                    )
+                    </div>
                   )}
                   {hasDesignOption(item.design.size) && (
                     <div className="do size">
@@ -341,8 +371,18 @@ const ItemView = () => {
           </div>
           <Rating />
           <div className="actions">
-            <button>Share Design</button>
-            <button>Add To Cart</button>
+            <button
+              onClick={() =>
+                handleShare({
+                  url: window.location.href,
+                  text: item.name,
+                  title: `KicksUp - ${item.name}`,
+                })
+              }
+            >
+              Share Design
+            </button>
+            <button onClick={handleAddToCart}>Add To Cart</button>
           </div>
         </div>
       </div>

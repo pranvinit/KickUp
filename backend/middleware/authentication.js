@@ -9,8 +9,8 @@ const authenticateUser = async (req, res, next) => {
     throw new CustomError.UnAuthenticatedError("User is not authorized.");
   }
   try {
-    const { name, userId, role } = verifyJWT(token);
-    req.user = { name, userId, role };
+    const { username, userId, role } = verifyJWT(token);
+    req.user = { username, userId, role };
     next();
   } catch (error) {
     throw new CustomError.UnAuthenticatedError("User authorization failed.");

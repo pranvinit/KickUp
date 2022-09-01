@@ -4,7 +4,6 @@ const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
 const createProduct = async (req, res) => {
-  req.body.seller_name = req.user.name;
   const product = await Product.create(req.body);
   res.status(StatusCodes.CREATED).json({ product });
 };
@@ -72,7 +71,7 @@ const getSingleProduct = async (req, res) => {
 
 const addToCart = async (req, res) => {
   const { userId } = req.user;
-  const { id: productId } = req.params;
+  const { id: productId } = req.body;
 
   const user = await User.findOne({ where: { user_id: userId } });
   if (!user) {
@@ -90,7 +89,7 @@ const addToCart = async (req, res) => {
 };
 const removeFromCart = async (req, res) => {
   const { userId } = req.user;
-  const { id: productId } = req.params;
+  const { id: productId } = req.body;
 
   const user = await User.findOne({ where: { user_id: userId } });
   if (!user) {
@@ -110,6 +109,25 @@ const removeFromCart = async (req, res) => {
   const updatedUser = await user.save();
 
   res.status(StatusCodes.OK).json({ user: updatedUser });
+};
+
+const getCartItems = async (req, res) => {
+  const { userId } = req.user;
+  console.log(req.user);
+
+  const user = await User.findOne({ where: { user_id: userId } });
+
+  if (!user.cart_items.length) {
+    throw new CustomError.BadRequestError("No items in cart.");
+  }
+
+  const products = await Promise.all(
+    user.cart_items.map((productId) => {
+      return Product.findOne({ where: { product_id: productId } });
+    })
+  );
+
+  res.status(StatusCodes.OK).json({ products, nbHits: products.length });
 };
 
 const updateProduct = async (req, res) => {
@@ -143,4 +161,5 @@ module.exports = {
   getSingleProduct,
   addToCart,
   removeFromCart,
+  getCartItems,
 };

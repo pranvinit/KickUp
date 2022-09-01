@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       seller_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: "KICKSUP",
         validate: {
           len: [2, 50],
         },

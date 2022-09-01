@@ -9,7 +9,7 @@ const Home = () => {
           <div className="about">
             <h1>Create Your Own Styles.</h1>
             <p>
-              KickUp has an interactive online console that lets you to create
+              KicksUp has an interactive online console that lets you to create
               beautiful and personalized shoe designs.
             </p>
           </div>

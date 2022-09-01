@@ -32,7 +32,7 @@ const Login = () => {
   return (
     <div className="login">
       <form className="box" onSubmit={handleSubmit}>
-        <h3>Sign in to KickUp</h3>
+        <h3>Sign in to KicksUp</h3>
         <div className="field">
           <label htmlFor="email">Email Address</label>
           <input
@@ -82,7 +82,7 @@ const Login = () => {
           </button>
         </div>
         <div className="create">
-          <span>New to KickUp?</span>
+          <span>New to KicksUp?</span>
           <Link to="/register">Create an account</Link>
         </div>
       </form>

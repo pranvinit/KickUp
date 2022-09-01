@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {
-  authenticateUser,
-  authorizePermissions,
-} = require("../middleware/authentication");
+const { authenticateUser } = require("../middleware/authentication");
 
 const {
   createProduct,
@@ -13,18 +10,14 @@ const {
   getSingleProduct,
   addToCart,
   removeFromCart,
+  getCartItems,
 } = require("../controllers/productController");
 
-router
-  .route("/")
-  .get(getAllProducts)
-  .post(
-    [authenticateUser, authorizePermissions("user", "admin")],
-    createProduct
-  );
+router.route("/").get(getAllProducts).post(createProduct);
 
 router
-  .route("/cart/:id")
+  .route("/cart")
+  .get(authenticateUser, getCartItems)
   .post(authenticateUser, addToCart)
   .delete(authenticateUser, removeFromCart);
 

@@ -28,14 +28,7 @@ const getSingleUser = async (req, res) => {
 };
 
 const showCurrentUser = async (req, res) => {
-  const { userId } = req.user;
-  const user = await User.findOne({
-    where: { user_id: userId },
-    include: [
-      { model: Review, as: "reviews" },
-      { model: Order, as: "orders" },
-    ],
-  });
+  const user = req.user;
   res.status(StatusCodes.OK).json({ user });
 };
 

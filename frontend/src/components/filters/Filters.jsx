@@ -20,7 +20,7 @@ const Filters = () => {
           </div>
           <div className="field">
             <input type="checkbox" id="p2" />
-            <label htmlFor="p2">Rs. 40001-7000</label>
+            <label htmlFor="p2">Rs. 4001-7000</label>
           </div>
           <div className="field">
             <input type="checkbox" id="p3" />

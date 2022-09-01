@@ -1,16 +1,46 @@
-import { useState } from "react";
-import Item from "../item/Item";
 import "./list.scss";
+import { useState, useEffect } from "react";
+import Item from "../item/Item";
+import { toast } from "react-toastify";
+import axios from "axios";
+import Spinner from "react-spinner-material";
 
 // importing mock data
-import { ITEMS } from "../../mockData";
+// import { ITEMS } from "../../mockData";
 import { Link } from "react-router-dom";
 
 const List = () => {
-  const [data, setData] = useState(ITEMS);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
   const [searchActive, setSearchActive] = useState(false);
 
+  const fetchItems = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("/api/products");
+      setData(res.data.products);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      toast.error(e.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
   const handleSearch = async () => {};
+
+  if (loading) {
+    return (
+      <div className="list">
+        <div className="wrapper wrapper-loader">
+          <Spinner />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="list">

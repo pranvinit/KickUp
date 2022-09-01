@@ -113,6 +113,11 @@
               gap: 40px;
               cursor: pointer;
 
+              .soleWhite {
+                box-sizing: border-box;
+                border: 2px solid #000;
+              }
+
               .container {
                 width: 70%;
                 display: flex;
