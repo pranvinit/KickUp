@@ -5,10 +5,19 @@ import Cart from "../../components/cart/Cart";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+import { ITEMS } from "../../mockData";
+
+import RatingComponent from "react-rating";
+
+import Rating from "../../components/rating/Rating";
+
 const ItemView = () => {
   const { id: productId } = useParams();
   const [loading, setLoading] = useState(false);
-  const [item, setItem] = useState(null);
+  const [item, setItem] = useState(ITEMS[0]);
+
+  const [activeImgIndex, setActiveImgIndex] = useState(0);
+  const [designTemplate, setDesignTemplate] = useState(item.design);
 
   const fetchItem = async () => {
     setLoading(true);
@@ -22,8 +31,19 @@ const ItemView = () => {
     }
   };
 
+  const handleDesignChange = (name, i) => {
+    setDesignTemplate((prev) => ({
+      ...prev,
+      [name]: i,
+    }));
+  };
+
+  const hasDesignOption = (option) => {
+    return !isNaN(option);
+  };
+
   useEffect(() => {
-    fetchItem();
+    // fetchItem();
   }, []);
 
   if (loading || !item) {
@@ -36,9 +56,295 @@ const ItemView = () => {
   return (
     <div className="itemView">
       <div className="itemDetails">
-        <span>{item.name}</span>
-        <span>{item.seller_name}</span>
-        <span>{item.price}</span>
+        <div className="wrapper">
+          <div className="top">
+            <img src="/assets/back.png" alt="back" />
+            <h3>Your Design Space</h3>
+          </div>
+          <div className="bottom">
+            <div className="left">
+              <img
+                src={item.images[activeImgIndex]}
+                alt={item.name}
+                className="activeImg"
+              />
+              <div className="preview">
+                {item.images.map((image, i) => (
+                  <img
+                    onClick={() => setActiveImgIndex(i)}
+                    src={image}
+                    alt={item.name}
+                    key={i}
+                    className={`${
+                      activeImgIndex === i ? "previewImg active" : "previewImg"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="right">
+              <div className="name">
+                <h2>{item.name}</h2>
+                <h3>by{item.seller_name}</h3>
+              </div>
+              {!!item.average_rating && (
+                <div className="reviews">
+                  <RatingComponent
+                    initialRating={Math.round(item.average_rating)}
+                    readonly
+                    emptySymbol={
+                      <img
+                        src="/assets/star-empty.png"
+                        alt="star empty"
+                        className="star"
+                      />
+                    }
+                    fullSymbol={
+                      <img
+                        src="/assets/star-fill.png"
+                        alt="star fill"
+                        className="star"
+                      />
+                    }
+                  />
+                  <span>{item.rating_count} Reviews</span>
+                </div>
+              )}
+              <div className="price">
+                <h2>Rs. {item.price}/-</h2>
+                <span>{item.offer}</span>
+              </div>
+              {!!Object.keys(item.design).length && (
+                <div className="design">
+                  {hasDesignOption(item.design.front) && (
+                    <div className="do front">
+                      <h3>Front</h3>
+                      <div className="container">
+                        <div onClick={() => handleDesignChange("front", 0)}>
+                          {designTemplate.front === 0 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img src="/assets/designs/do1.png" alt="option one" />
+                        </div>
+                        <div onClick={() => handleDesignChange("front", 1)}>
+                          {designTemplate.front === 1 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img src="/assets/designs/do2.png" alt="option two" />
+                        </div>
+                        <div onClick={() => handleDesignChange("front", 2)}>
+                          {designTemplate.front === 2 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img
+                            src="/assets/designs/do3.png"
+                            alt="option three"
+                          />
+                        </div>
+                        <div className="do2"></div>
+                        <div className="do3"></div>
+                      </div>
+                    </div>
+                  )}
+                  {hasDesignOption(item.design.middle) && (
+                    <div className="do middle">
+                      <h3>Middle</h3>
+                      <div className="container">
+                        <div onClick={() => handleDesignChange("middle", 0)}>
+                          {designTemplate.middle === 0 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img src="/assets/designs/do1.png" alt="option one" />
+                        </div>
+                        <div onClick={() => handleDesignChange("middle", 1)}>
+                          {designTemplate.middle === 1 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img src="/assets/designs/do2.png" alt="option two" />
+                        </div>
+                        <div onClick={() => handleDesignChange("middle", 2)}>
+                          {designTemplate.middle === 2 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img
+                            src="/assets/designs/do3.png"
+                            alt="option three"
+                          />
+                        </div>
+                        <div className="do2"></div>
+                        <div className="do3"></div>
+                      </div>
+                    </div>
+                  )}
+                  {hasDesignOption(item.design.back) && (
+                    <div className="do back">
+                      <h3>Back</h3>
+                      <div className="container">
+                        <div onClick={() => handleDesignChange("back", 0)}>
+                          {designTemplate.back === 0 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img src="/assets/designs/do1.png" alt="option one" />
+                        </div>
+                        <div onClick={() => handleDesignChange("back", 1)}>
+                          {designTemplate.back === 1 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img src="/assets/designs/do2.png" alt="option two" />
+                        </div>
+                        <div onClick={() => handleDesignChange("back", 2)}>
+                          {designTemplate.back === 2 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <img
+                            src="/assets/designs/do3.png"
+                            alt="option three"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {hasDesignOption(
+                    item.design.sole && (
+                      <div className="do sole">
+                        <h3>Sole</h3>
+                        <div className="container">
+                          <div onClick={() => handleDesignChange("sole", 0)}>
+                            {designTemplate.sole === 0 && (
+                              <img
+                                src="/assets/designs/checkbox.png"
+                                alt="checkbox"
+                                className="checkbox"
+                              />
+                            )}
+                            <img
+                              src="/assets/designs/white-square.png"
+                              alt="option one"
+                            />
+                          </div>
+                          <div onClick={() => handleDesignChange("sole", 1)}>
+                            {designTemplate.sole === 1 && (
+                              <img
+                                src="/assets/designs/checkbox.png"
+                                alt="checkbox"
+                                className="checkbox"
+                              />
+                            )}
+                            <img
+                              src="/assets/designs/blue-square.png"
+                              alt="option two"
+                            />
+                          </div>
+                          <div onClick={() => handleDesignChange("sole", 2)}>
+                            {designTemplate.sole === 2 && (
+                              <img
+                                src="/assets/designs/checkbox.png"
+                                alt="checkbox"
+                                className="checkbox"
+                              />
+                            )}
+                            <img
+                              src="/assets/designs/black-square.png"
+                              alt="option three"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  )}
+                  {hasDesignOption(item.design.size) && (
+                    <div className="do size">
+                      <h3>Size</h3>
+                      <div className="container">
+                        <div onClick={() => handleDesignChange("size", 0)}>
+                          {designTemplate.size === 0 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <span className="sizeField">7</span>
+                        </div>
+                        <div onClick={() => handleDesignChange("size", 1)}>
+                          {designTemplate.size === 1 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <span className="sizeField">8</span>
+                        </div>
+                        <div onClick={() => handleDesignChange("size", 2)}>
+                          {designTemplate.size === 2 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <span className="sizeField">9</span>
+                        </div>
+                        <div onClick={() => handleDesignChange("size", 3)}>
+                          {designTemplate.size === 3 && (
+                            <img
+                              src="/assets/designs/checkbox.png"
+                              alt="checkbox"
+                              className="checkbox"
+                            />
+                          )}
+                          <span className="sizeField">10</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+          <Rating />
+          <div className="actions">
+            <button>Share Design</button>
+            <button>Add To Cart</button>
+          </div>
+        </div>
       </div>
       <Cart />
     </div>

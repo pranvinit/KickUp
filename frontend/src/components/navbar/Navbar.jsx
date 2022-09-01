@@ -14,8 +14,6 @@ const Navbar = () => {
     }
   };
 
-  console.log(user);
-
   return (
     <div className="navbar">
       <div className="logo">
@@ -58,7 +56,7 @@ const Navbar = () => {
         {user && (
           <li className="profile">
             <img src="/assets/person.png" alt="profile" />
-            <span>{user.name}</span>
+            <span>{user.username}</span>
           </li>
         )}
         {user && (

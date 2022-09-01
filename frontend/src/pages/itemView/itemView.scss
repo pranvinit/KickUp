@@ -1,10 +1,178 @@
+@import "../../partials/variables";
+
 .itemView {
   display: flex;
+  gap: 20px;
   min-height: calc(100vh - 80px);
   padding-inline: 30px;
-  margin-top: 50px;
+  margin-block: 50px 25px;
+
+  img {
+    width: 50px;
+  }
 
   .itemDetails {
     flex: 3;
+    box-shadow: $primary-shadow;
+
+    .wrapper {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+
+        img {
+          width: 30px;
+          cursor: pointer;
+        }
+
+        h3 {
+          font-size: 1.3rem;
+        }
+      }
+
+      .bottom {
+        display: flex;
+        gap: 30px;
+        .left {
+          flex: 2;
+          display: flex;
+          gap: 20px;
+          height: fit-content;
+
+          .activeImg {
+            width: 70%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .preview {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+
+            img {
+              width: 130px;
+              aspect-ratio: 1;
+              object-fit: cover;
+              cursor: pointer;
+              &.active {
+                border: 2px solid #000;
+              }
+            }
+          }
+        }
+
+        .right {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+
+          .name {
+            h2 {
+              font-size: 1.3rem;
+              font-weight: 600;
+            }
+          }
+
+          .reviews {
+            display: flex;
+            flex-direction: column;
+            .star {
+              width: 20px;
+              margin-right: 2px;
+            }
+
+            span {
+              font-size: 0.9rem;
+            }
+          }
+
+          .price {
+            span {
+              font-size: 0.8rem;
+            }
+          }
+
+          .design {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+
+            .do {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 40px;
+              cursor: pointer;
+
+              .container {
+                width: 70%;
+                display: flex;
+                gap: 20px;
+
+                & > div {
+                  position: relative;
+                  display: flex;
+                  align-items: center;
+                }
+
+                & > div img {
+                  width: 40px;
+                }
+
+                .checkbox {
+                  position: absolute;
+                  inset: 0;
+                  z-index: 999;
+                  opacity: 0.5;
+                }
+              }
+            }
+
+            .size .container .sizeField {
+              box-sizing: border-box;
+              display: block;
+              width: 40px;
+              aspect-ratio: 1;
+              border: 3px solid #000;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          }
+        }
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+
+        button {
+          width: 150px;
+          border: 2px solid #000;
+          padding-block: 5px;
+          font-size: 1.1rem;
+          background-color: #fff;
+          color: #000;
+          transition: 0.2ms;
+          cursor: pointer;
+
+          &:hover {
+            color: #fff;
+            background-color: #000;
+          }
+        }
+      }
+    }
   }
 }

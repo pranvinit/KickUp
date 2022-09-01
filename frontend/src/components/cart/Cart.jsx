@@ -19,7 +19,7 @@ const Cart = () => {
             cartItems.map((item) => (
               <div className="cartItem" key={item.product_id}>
                 <div className="imgWrapper">
-                  <img src={item.images[0]} alt={item.name} />{" "}
+                  <img src={item.images[1]} alt={item.name} />{" "}
                   <img src="/assets/cancel.png" alt="cancel" />
                 </div>
                 <div className="right">

@@ -5,7 +5,7 @@ const Item = ({ item }) => {
 
   return (
     <div className="item">
-      <img src={item.images[0]} alt={item.name} />
+      <img src={item.images[1]} alt={item.name} />
       <div>
         <h2 className="center">{item.name}</h2>
         <div className="bottom">
@@ -14,7 +14,7 @@ const Item = ({ item }) => {
             {Array(Math.round(item.average_rating))
               .fill()
               .map((i) => (
-                <img key={i} src="/assets/star.png" alt="star" />
+                <img key={i} src="/assets/star-fill.png" alt="star" />
               ))}
           </div>
         </div>

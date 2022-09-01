@@ -45,6 +45,24 @@
       flex-direction: column;
       gap: 10px;
 
+      div {
+        display: flex;
+        gap: 10px;
+
+        & > button {
+          flex: 1;
+
+          &:nth-of-type(2) {
+            background: #ff5201;
+            background: linear-gradient(to left, #ff5201, #f4eb50);
+
+            &:hover {
+              background: linear-gradient(to left, #cc4100, #f1e722);
+            }
+          }
+        }
+      }
+
       button {
         border: none;
         padding-block: 10px;
@@ -52,6 +70,7 @@
         color: #fff;
         background-color: $blue-btn;
         transition: 0.2ms;
+        cursor: pointer;
 
         &:disabled {
           cursor: not-allowed;

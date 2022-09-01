@@ -24,6 +24,11 @@ const Login = () => {
     navigate("/");
   };
 
+  const handleDemo = async () => {
+    await loginRequest({ email: "demo@gmail.com", password: "secret" });
+    navigate("/");
+  };
+
   return (
     <div className="login">
       <form className="box" onSubmit={handleSubmit}>
@@ -54,9 +59,19 @@ const Login = () => {
         </div>
 
         <div className="actions">
-          <button className="submit" type="submit" disabled={isFetching}>
-            Login
-          </button>
+          <div>
+            <button className="submit" type="submit" disabled={isFetching}>
+              Login
+            </button>
+            <button
+              className="submit"
+              type="button"
+              onClick={handleDemo}
+              disabled={isFetching}
+            >
+              Demo
+            </button>
+          </div>
           <button
             className="cancel"
             type="button"
