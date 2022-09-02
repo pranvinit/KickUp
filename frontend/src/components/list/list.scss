@@ -35,12 +35,12 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-
-            &.active {
-              background-color: $very-light-grey;
-            }
+            background-color: $very-light-grey;
             img {
               width: 60%;
+            }
+            .close {
+              width: 40%;
             }
           }
           input {
@@ -58,6 +58,33 @@
           align-items: center;
           justify-content: center;
           cursor: pointer;
+          position: relative;
+
+          &.active {
+            border-color: red;
+          }
+          .sortFields {
+            box-sizing: border-box;
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            right: 0;
+            box-shadow: $primary-shadow;
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            z-index: 999;
+
+            .field {
+              padding: 15px;
+              width: 150px;
+              &.active {
+                background-color: $very-light-grey;
+              }
+            }
+          }
         }
       }
     }
@@ -82,7 +109,7 @@
   }
 
   .wrapper-loader {
-    height: 600px;
+    height: 500px;
     display: flex;
     align-items: center;
     justify-content: center;

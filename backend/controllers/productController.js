@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const { User, Product, Review, Sequelize } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
@@ -9,9 +9,10 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const { prices, colors, designTemplates, types } = req.query;
+  const { prices, colors, designTemplates, types, query, sort } = req.query;
 
   const whereOptions = {};
+  const orderOptions = [];
 
   if (prices) {
     const priceValues = prices.map((p) => {
@@ -32,9 +33,17 @@ const getAllProducts = async (req, res) => {
       [Op.or]: [...types],
     };
   }
+  if (query) {
+    whereOptions[Op.or] = [{ name: { [Op.iLike]: `%${query}%` } }];
+  }
+
+  if (sort) {
+    orderOptions.push(sort);
+  }
 
   const products = await Product.findAll({
     where: whereOptions,
+    order: orderOptions,
     include: { model: Review, as: "reviews", attributes: [] },
     attributes: {
       include: [
