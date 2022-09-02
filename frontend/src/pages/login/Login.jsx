@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/auth/AuthContext";
 
 const Login = () => {
   const [formInput, setFormInput] = useState({});

@@ -21,7 +21,7 @@ import Contact from "./pages/contact/Contact";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import NotFound from "./pages/notfound/Notfound";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext } from "./context/auth/AuthContext";
 
 // Components imports
 import Navbar from "./components/navbar/Navbar";

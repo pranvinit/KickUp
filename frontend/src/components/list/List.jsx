@@ -1,5 +1,5 @@
 import "./list.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Item from "../item/Item";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -8,16 +8,20 @@ import Spinner from "react-spinner-material";
 // importing mock data
 // import { ITEMS } from "../../mockData";
 import { Link } from "react-router-dom";
+import { QueryContext } from "../../context/query/QueryContext";
 
 const List = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchActive, setSearchActive] = useState(false);
 
+  const { query } = useContext(QueryContext);
+
   const fetchItems = async () => {
     setLoading(true);
+
     try {
-      const res = await axios.get("/api/products");
+      const res = await axios.get("/api/products", { params: query });
       setData(res.data.products);
       setLoading(false);
     } catch (e) {
@@ -28,7 +32,7 @@ const List = () => {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [query]);
 
   const handleSearch = async () => {};
 
@@ -37,6 +41,16 @@ const List = () => {
       <div className="list">
         <div className="wrapper wrapper-loader">
           <Spinner />
+        </div>
+      </div>
+    );
+  }
+
+  if (!loading && !data.length) {
+    return (
+      <div className="list">
+        <div className="wrapper wrapper-loader">
+          <h3>No matching items found.</h3>
         </div>
       </div>
     );
@@ -79,7 +93,11 @@ const List = () => {
         </div>
         <div className="items">
           {data.map((item) => (
-            <Link className="link-reset" to={`/store/${item.product_id}`}>
+            <Link
+              key={item.product_id}
+              className="link-reset"
+              to={`/store/${item.product_id}`}
+            >
               <Item item={item} />
             </Link>
           ))}

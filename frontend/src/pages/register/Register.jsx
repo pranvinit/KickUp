@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/auth/AuthContext";
 import "./register.scss";
 
 const Register = () => {
   const [formInput, setFormInput] = useState({});
   const navigate = useNavigate();
-  const { isFetching, error, registerRequest } = useContext(AuthContext);
+  const { isFetching, registerRequest } = useContext(AuthContext);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;

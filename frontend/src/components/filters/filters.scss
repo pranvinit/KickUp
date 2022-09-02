@@ -74,11 +74,17 @@
           &:nth-of-type(5) {
             background-color: purple;
           }
+
+          &.active {
+            box-sizing: border-box;
+            border: 3px solid #000;
+          }
         }
       }
     }
 
     button {
+      flex: 1;
       border: 2px solid #000;
       padding-block: 10px;
       font-size: 1.1rem;

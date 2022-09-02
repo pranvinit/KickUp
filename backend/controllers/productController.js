@@ -9,16 +9,29 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const { price, color, designTemplate, type } = req.query;
+  const { prices, colors, designTemplates, types } = req.query;
 
   const whereOptions = {};
 
-  if (price) {
-    const [ll, ul] = price.split("-").map((i) => parseInt(i));
-    whereOptions.price = { [Op.between]: [ll, ul] };
+  if (prices) {
+    const priceValues = prices.map((p) => {
+      return p.split("-").map((i) => parseInt(i));
+    });
+
+    whereOptions.price = {
+      [Op.or]: priceValues.map(([ll, ul]) => ({ [Op.between]: [ll, ul] })),
+    };
   }
-  if (color) whereOptions.color = color;
-  if (type) whereOptions.type = type;
+  if (colors) {
+    whereOptions.color = {
+      [Op.or]: [...colors],
+    };
+  }
+  if (types) {
+    whereOptions.type = {
+      [Op.or]: [...types],
+    };
+  }
 
   const products = await Product.findAll({
     where: whereOptions,
@@ -35,9 +48,10 @@ const getAllProducts = async (req, res) => {
     group: ["Product.id"],
   });
 
-  if (designTemplate) {
+  if (designTemplates) {
+    const mustHave = Math.min(...designTemplates.map((dt) => parseInt(dt)));
     const filteredProducts = products.filter(
-      (item) => Object.keys(item.design).length >= parseInt(designTemplate)
+      (item) => Object.keys(item.design).length >= mustHave
     );
     return res
       .status(StatusCodes.OK)
@@ -85,7 +99,9 @@ const addToCart = async (req, res) => {
   user.set({ cart_items: [...user.cart_items, productId] });
   const updatedUser = await user.save();
 
-  res.status(StatusCodes.OK).json({ user: updatedUser });
+  res
+    .status(StatusCodes.OK)
+    .json({ user: updatedUser, message: "Product added to cart." });
 };
 const removeFromCart = async (req, res) => {
   const { userId } = req.user;
@@ -101,24 +117,25 @@ const removeFromCart = async (req, res) => {
     throw new CustomError.BadRequestError("Product not in cart.");
   }
 
-  const newCartItems = user.cart_items.filter(
-    (item) => item.product_id !== productId
-  );
+  const newCartItems = user.cart_items.filter((product_id) => {
+    return product_id !== productId;
+  });
 
   user.set({ cart_items: newCartItems });
   const updatedUser = await user.save();
 
-  res.status(StatusCodes.OK).json({ user: updatedUser });
+  res
+    .status(StatusCodes.OK)
+    .json({ user: updatedUser, message: "Product removed from cart." });
 };
 
 const getCartItems = async (req, res) => {
   const { userId } = req.user;
-  console.log(req.user);
 
   const user = await User.findOne({ where: { user_id: userId } });
 
   if (!user.cart_items.length) {
-    throw new CustomError.BadRequestError("No items in cart.");
+    return res.status(StatusCodes.OK).json({ message: "No items in cart." });
   }
 
   const products = await Promise.all(

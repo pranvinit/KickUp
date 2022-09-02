@@ -1,8 +1,8 @@
 import "./item.scss";
 
-const Item = ({ item }) => {
-  console.log(item);
+import RatingComponent from "react-rating";
 
+const Item = ({ item }) => {
   return (
     <div className="item">
       <img src={item.images[1]} alt={item.name} />
@@ -11,11 +11,24 @@ const Item = ({ item }) => {
         <div className="bottom">
           <span>Rs. {item.price}/-</span>
           <div>
-            {Array(Math.round(item.average_rating))
-              .fill()
-              .map((i) => (
-                <img key={i} src="/assets/star-fill.png" alt="star" />
-              ))}
+            <RatingComponent
+              initialRating={Math.round(item.average_rating)}
+              readonly
+              emptySymbol={
+                <img
+                  src="/assets/star-empty.png"
+                  alt="star empty"
+                  className="star"
+                />
+              }
+              fullSymbol={
+                <img
+                  src="/assets/star-fill.png"
+                  alt="star fill"
+                  className="star"
+                />
+              }
+            />
           </div>
         </div>
       </div>

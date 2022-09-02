@@ -1,5 +1,5 @@
 import "./itemView.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Cart from "../../components/cart/Cart";
 import { toast } from "react-toastify";
@@ -11,9 +11,10 @@ import Spinner from "react-spinner-material";
 import RatingComponent from "react-rating";
 
 import Rating from "../../components/rating/Rating";
-import { ITEMS } from "../../mockData";
+// import { ITEMS } from "../../mockData";
 
 const ItemView = () => {
+  const cartRef = useRef();
   const navigate = useNavigate();
   const { id: productId } = useParams();
   const [loading, setLoading] = useState(false);
@@ -27,9 +28,7 @@ const ItemView = () => {
     try {
       const res = await axios.get(`/api/products/${productId}`);
       setItem(res.data.product);
-      console.log(res.data.product);
-      console.log(item);
-
+      setDesignTemplate(res.data.product.design);
       setLoading(false);
     } catch (e) {
       setLoading(false);
@@ -54,8 +53,11 @@ const ItemView = () => {
 
   const handleAddToCart = async () => {
     try {
-      await axios.post("/api/products/cart", { id: item.product_id });
-      toast.success("Item added to cart.");
+      const res = await axios.post("/api/products/cart", {
+        id: item.product_id,
+      });
+      cartRef.current.fetchCartItems();
+      toast.success(res.data.message);
     } catch (e) {
       toast.error(e.response.data.message);
     }
@@ -369,7 +371,7 @@ const ItemView = () => {
               )}
             </div>
           </div>
-          <Rating />
+          <Rating id={productId} />
           <div className="actions">
             <button
               onClick={() =>
@@ -386,7 +388,7 @@ const ItemView = () => {
           </div>
         </div>
       </div>
-      <Cart />
+      <Cart ref={cartRef} />
     </div>
   );
 };

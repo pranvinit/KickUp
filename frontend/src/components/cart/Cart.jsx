@@ -1,11 +1,64 @@
 import "./cart.scss";
-import { useState } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
+import Spinner from "react-spinner-material";
 
-// mock data import
-import { ITEMS } from "../../mockData";
+// import { ITEMS } from "../../mockData";
 
-const Cart = () => {
-  const [cartItems, setCartItems] = useState(ITEMS);
+const Cart = forwardRef((props, ref) => {
+  const [cartItems, setCartItems] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  const fetchCartItems = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("/api/products/cart");
+      setCartItems(res.data.products || []);
+
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      toast.error(e.response.data.message);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({ fetchCartItems }));
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
+  const handleRemove = async (id) => {
+    try {
+      const res = await axios.delete("/api/products/cart", { data: { id } });
+      toast.success(res.data.message);
+      fetchCartItems();
+    } catch (e) {
+      toast.error(e.response.data.message);
+    }
+  };
+
+  const handleOrder = async () => {
+    try {
+      const res = await axios.post("/api/orders/checkout");
+      fetchCartItems();
+      toast.success(res.data.message);
+    } catch (e) {
+      toast.error(e.response.data.message);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="cart">
+        <div className="wrapper wrapper-loader">
+          <Spinner />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="cart">
@@ -20,7 +73,11 @@ const Cart = () => {
               <div className="cartItem" key={item.product_id}>
                 <div className="imgWrapper">
                   <img src={item.images[1]} alt={item.name} />{" "}
-                  <img src="/assets/cancel.png" alt="cancel" />
+                  <img
+                    onClick={() => handleRemove(item.product_id)}
+                    src="/assets/cancel.png"
+                    alt="cancel"
+                  />
                 </div>
                 <div className="right">
                   <h3>{item.name}</h3>
@@ -43,11 +100,13 @@ const Cart = () => {
               <span>Select date</span>
             </div>
           </div>
-          <button>Order Now</button>
+          <button disabled={!cartItems.length} onClick={handleOrder}>
+            Order Now
+          </button>
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default Cart;

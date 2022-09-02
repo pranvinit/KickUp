@@ -1,14 +1,16 @@
 import "./navbar.scss";
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context/auth/AuthContext";
 
 const Navbar = () => {
   const { user, logoutRequest } = useContext(AuthContext);
+  const [sidebarVisibility, setSidebarVisibility] = useState(false);
 
   const handleLogout = async () => {
     try {
       logoutRequest();
+      setSidebarVisibility(false);
     } catch (err) {
       console.log(err);
     }
@@ -54,14 +56,9 @@ const Navbar = () => {
       )}
       <ul className="navlist right">
         {user && (
-          <li className="profile">
+          <li className="profile" onClick={() => setSidebarVisibility(true)}>
             <img src="/assets/person.png" alt="profile" />
             <span>{user.username}</span>
-          </li>
-        )}
-        {user && (
-          <li className="logout" onClick={handleLogout}>
-            Logout
           </li>
         )}
         {!user && (
@@ -79,6 +76,29 @@ const Navbar = () => {
           </li>
         )}
       </ul>
+      <div className="sidebar" data-visible={sidebarVisibility}>
+        <div className="close">
+          <img
+            onClick={() => setSidebarVisibility(false)}
+            src="/assets/close.png"
+            alt="close"
+            className="closeIcon"
+          />
+        </div>
+        <div className="wrapper">
+          <span className="logout sbItem" onClick={handleLogout}>
+            Logout
+          </span>
+          <span className="sbItem" onClick={() => setSidebarVisibility(false)}>
+            Orders
+            <img
+              className="ordersIcon"
+              src="/assets/right-arrow.png"
+              alt="orders"
+            />
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

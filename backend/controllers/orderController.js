@@ -1,17 +1,18 @@
-const { Order, Product } = require("../models");
+const { User, Order, Product } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
 const createOrder = async (req, res) => {
   const { userId } = req.user;
-  const { cartItems } = req.body;
 
-  if (!cartItems?.length) {
-    throw new CustomError.BadRequestError("No orders found.");
+  const user = await User.findOne({ where: { user_id: userId } });
+
+  if (!user.cart_items?.length) {
+    throw new CustomError.BadRequestError("No items in cart.");
   }
 
   const orderItems = await Promise.all(
-    cartItems.map((productId) => {
+    user.cart_items.map((productId) => {
       return Product.findOne({ where: { product_id: productId } });
     })
   );
@@ -30,6 +31,9 @@ const createOrder = async (req, res) => {
       });
     })
   );
+
+  user.set({ cart_items: [] });
+  await user.save();
 
   res
     .status(StatusCodes.CREATED)
