@@ -29,7 +29,9 @@ export const AuthContextProvider = ({ children }) => {
 
   const authorizeUser = async () => {
     try {
-      const user = await axios.get("/api/users/showMe");
+      const user = await axios.get("/api/users/showMe", {
+        withCredentials: true,
+      });
       dispatch(AuthorizeUser(user.data.user));
     } catch (err) {
       console.log(err);
@@ -39,7 +41,11 @@ export const AuthContextProvider = ({ children }) => {
   const loginRequest = async ({ email, password }) => {
     dispatch(AuthStart());
     try {
-      const res = await axios.post("/api/auth/login", { email, password });
+      const res = await axios.post(
+        "/api/auth/login",
+        { email, password },
+        { withCredentials: true }
+      );
       dispatch(AuthSuccess(res.data.user));
 
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -52,7 +58,9 @@ export const AuthContextProvider = ({ children }) => {
   const registerRequest = async (body) => {
     dispatch(AuthStart());
     try {
-      const res = await axios.post("/api/auth/register", body);
+      const res = await axios.post("/api/auth/register", body, {
+        withCredentials: true,
+      });
 
       dispatch(AuthSuccess(res.data.user));
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -63,7 +71,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const logoutRequest = async () => {
-    await axios.get("/api/auth/logout");
+    await axios.get("/api/auth/logout", { withCredentials: true });
     localStorage.removeItem("user");
     dispatch(Logout());
   };

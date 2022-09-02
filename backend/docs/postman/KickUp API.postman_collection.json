@@ -1,0 +1,478 @@
+{
+	"info": {
+		"_postman_id": "8db5071b-8c52-4352-86d6-fbdc8d4069cd",
+		"name": "KickUp API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18648606"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"demo@gmail.com\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/auth/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Demo User\",\r\n    \"email\": \"demo@gmail.com\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get single user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/c5c704df-10c9-4bdb-a4ed-6da43490426a",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"c5c704df-10c9-4bdb-a4ed-6da43490426a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show current user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/showMe",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"showMe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Pranav Musk\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/a8d21be0-0ce1-442d-b209-a52aeb7581ed",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"a8d21be0-0ce1-442d-b209-a52aeb7581ed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/d93e8cde-f13b-4bdb-950a-60a54f658d53",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"d93e8cde-f13b-4bdb-950a-60a54f658d53"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Nike Air 69\",\r\n    \"price\": 420,\r\n    \"offer\": \"Get 20% off with SBI Credit Card\",\r\n    \"images\": [\"https://res.cloudinary.com/dl26pbek4/image/upload/v1661860210/shoes/red/shoe1/2_jhk2cv.jpg\", \"https://res.cloudinary.com/dl26pbek4/image/upload/v1661860209/shoes/red/shoe1/custom-nike-mercurial-vapor-14-elite-by-you_hq9woq.jpg\", \"https://res.cloudinary.com/dl26pbek4/image/upload/v1661860209/shoes/red/shoe1/3_ydstlo.jpg\"],\r\n    \"design\": {\"front\": 0, \"middle\": 1, \"sole\": 2, \"size\": 3},\r\n    \"type\": \"sneakers\",\r\n    \"color\": \"red\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/products",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Nike Air 669\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/products/f35ea5f3-ee03-4f25-b615-51a7ce8d4291",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products",
+								"f35ea5f3-ee03-4f25-b615-51a7ce8d4291"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get single product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/products/b0d5ae8c-4c00-40c0-a493-4c466b1820e0",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products",
+								"b0d5ae8c-4c00-40c0-a493-4c466b1820e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/products?query=KSL 01",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "price",
+									"value": "[\"1001-3000'\", \"4000-5000\"]",
+									"disabled": true
+								},
+								{
+									"key": "color",
+									"value": "[\"red\", \"purple\"]",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "loafers",
+									"disabled": true
+								},
+								{
+									"key": "designTemplate",
+									"value": "[3, 2, 2]",
+									"disabled": true
+								},
+								{
+									"key": "query",
+									"value": "KSL 01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/products/da5f1229-88f7-4a65-9812-092fe6c5dc63",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products",
+								"da5f1229-88f7-4a65-9812-092fe6c5dc63"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add to cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"5f48f1e8-af2c-4d6c-ab07-9b43ad74b478\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/products/cart",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get cart items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/products/cart",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove from cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"5f48f1e8-af2c-4d6c-ab07-9b43ad74b478\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/products/cart",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"products",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "create review",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\":4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/reviews/b62c2be4-f565-4ffb-bb36-997fa462c1ac",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"reviews",
+								"b62c2be4-f565-4ffb-bb36-997fa462c1ac"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "create order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/orders/checkout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"orders",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
