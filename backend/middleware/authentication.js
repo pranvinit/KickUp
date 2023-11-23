@@ -2,6 +2,7 @@ const CustomError = require("../errors");
 const { verifyJWT } = require("../utils");
 
 // checks if user is logged in and has a valid jwt token
+
 const authenticateUser = async (req, res, next) => {
   // as we have attached signed cookie
   const token = req.signedCookies.token;
@@ -16,6 +17,7 @@ const authenticateUser = async (req, res, next) => {
     throw new CustomError.UnAuthenticatedError("User authorization failed.");
   }
 };
+
 // using a wrapper function that returns a callback so we can accept parameters with rest operator
 // roles stores an array of authorized user roles
 const authorizePermissions = (...roles) => {

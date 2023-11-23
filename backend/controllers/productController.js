@@ -1,7 +1,11 @@
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 const { User, Product, Review, Sequelize } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
+
+// Cache imports
+const createQueryHash = require("../utils/createQueryHash");
+const { getFromCache, setWithExpire } = require("../utils/redisCacheHelper");
 
 const createProduct = async (req, res) => {
   const product = await Product.create(req.body);
@@ -10,6 +14,17 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   const { prices, colors, designTemplates, types, query, sort } = req.query;
+  const queryHash = createQueryHash(req.query);
+
+  const cachedProducts = await getFromCache(queryHash);
+
+  if (cachedProducts) {
+    return res.status(StatusCodes.OK).json({
+      products: cachedProducts,
+      nbHits: cachedProducts.length,
+      message: "Retrieved from cache.",
+    });
+  }
 
   const whereOptions = {};
   const orderOptions = [];
@@ -62,16 +77,28 @@ const getAllProducts = async (req, res) => {
     const filteredProducts = products.filter(
       (item) => Object.keys(item.design).length >= mustHave
     );
+
+    // Cache filtered products
+    setWithExpire(queryHash, filteredProducts);
     return res
       .status(StatusCodes.OK)
       .json({ products: filteredProducts, nbHits: filteredProducts.length });
   }
 
+  // Cache products
+  setWithExpire(queryHash, products);
   res.status(StatusCodes.OK).json({ products, nbHits: products.length });
 };
 
 const getSingleProduct = async (req, res) => {
   const { id: productId } = req.params;
+
+  const cachedProduct = await getFromCache(productId);
+  if (cachedProduct)
+    return res
+      .status(StatusCodes.OK)
+      .json({ product: cachedProduct, message: "Retrieved from cache." });
+
   const product = await Product.findOne({
     where: { product_id: productId },
     include: { model: Review, as: "reviews", attributes: [] },
@@ -89,6 +116,10 @@ const getSingleProduct = async (req, res) => {
   if (!product) {
     throw new CustomError.NotFoundError("Product not found.");
   }
+
+  // Cache product
+  setWithExpire(productId, product);
+
   res.status(StatusCodes.OK).json({ product });
 };
 
@@ -140,6 +171,15 @@ const removeFromCart = async (req, res) => {
 
 const getCartItems = async (req, res) => {
   const { userId } = req.user;
+  const cartItemsRedisKey = `user:${userId}:cartItems`;
+
+  const cachedCartItems = await getFromCache(cartItemsRedisKey);
+  if (cachedCartItems)
+    return res.status(StatusCodes.OK).json({
+      products: cachedCartItems,
+      nbHits: cachedCartItems.length,
+      message: "Retrieved from cache.",
+    });
 
   const user = await User.findOne({ where: { user_id: userId } });
 
@@ -153,12 +193,14 @@ const getCartItems = async (req, res) => {
     })
   );
 
+  // Cache products
+  setWithExpire(cartItemsRedisKey, products);
+
   res.status(StatusCodes.OK).json({ products, nbHits: products.length });
 };
 
 const updateProduct = async (req, res) => {
   const { id: productId } = req.params;
-
   const product = await Product.findOne({ where: { product_id: productId } });
 
   if (!product) {
@@ -166,6 +208,10 @@ const updateProduct = async (req, res) => {
   }
   product.set(req.body);
   const updatedProduct = await product.save();
+
+  // Revalidate cache
+  setWithExpire(productId, updatedProduct);
+
   res.status(StatusCodes.OK).json({ product: updatedProduct });
 };
 
@@ -176,6 +222,7 @@ const deleteProduct = async (req, res) => {
   if (!product) {
     throw new CustomError.NotFoundError("Product not found.");
   }
+
   res.status(StatusCodes.NO_CONTENT).json({ message: "Product was removed" });
 };
 

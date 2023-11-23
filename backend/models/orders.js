@@ -25,6 +25,5 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "orders",
     }
   );
-
   return Order;
 };

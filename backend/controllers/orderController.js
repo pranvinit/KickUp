@@ -40,4 +40,12 @@ const createOrder = async (req, res) => {
     .json({ message: "Orders placed successfully." });
 };
 
-module.exports = { createOrder };
+const getOrders = async (req, res) => {
+  const { userId } = req.user;
+
+  const orders = await Order.findAll({ where: { user: userId } });
+
+  res.status(StatusCodes.OK).json({ orders });
+};
+
+module.exports = { createOrder, getOrders };

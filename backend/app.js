@@ -10,6 +10,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleWare = require("./middleware/error-handler");
+const loggerMiddleware = require("./middleware/logger");
 
 // Routes imports
 const authRouter = require("./routes/authRoutes");
@@ -19,6 +20,8 @@ const reviewRouter = require("./routes/reviewRoutes");
 const orderRouter = require("./routes/orderRoutes");
 
 const connectDB = require("./db/connect");
+
+app.use(loggerMiddleware);
 
 const corsOptions = {
   origin: "http://localhost:3000",

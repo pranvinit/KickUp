@@ -2,6 +2,10 @@ const { User, Review, Order } = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
+// Cache imports
+const redisClient = require("../cache/redisClient");
+const { getFromCache, setWithExpire } = require("../utils/redisCacheHelper");
+
 const getAllUsers = async (req, res) => {
   const users = await User.findAll({
     include: [
@@ -14,6 +18,14 @@ const getAllUsers = async (req, res) => {
 
 const getSingleUser = async (req, res) => {
   const { id: userId } = req.params;
+
+  // Check cache first
+  const cachedUser = await getFromCache(userId);
+  if (cachedUser)
+    return res
+      .status(StatusCodes.OK)
+      .json({ user: cachedUser, message: "Retrieved from cache." });
+
   const user = await User.findOne({
     where: { user_id: userId },
     include: [
@@ -24,6 +36,10 @@ const getSingleUser = async (req, res) => {
   if (!user) {
     throw new CustomError.NotFoundError("User not found.");
   }
+
+  // Cache user data
+  setWithExpire(userId, user);
+
   res.status(StatusCodes.OK).json({ user });
 };
 
@@ -47,6 +63,10 @@ const updateUser = async (req, res) => {
   }
   user.set(req.body);
   const updatedUser = await user.save();
+
+  // Revalidate cache
+  setWithExpire(userId, updatedUser);
+
   res.status(StatusCodes.OK).json({ user: updatedUser });
 };
 
@@ -57,6 +77,10 @@ const deleteUser = async (req, res) => {
   if (!user) {
     throw new CustomError.NotFoundError("User not found.");
   }
+
+  // Delete cache
+  redisClient.del(userId);
+
   res.status(StatusCodes.NO_CONTENT).json({ message: "User was removed" });
 };
 
