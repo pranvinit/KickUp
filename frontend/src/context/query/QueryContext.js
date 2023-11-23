@@ -8,7 +8,6 @@ const INITIAL_STATE = {};
 export const QueryContext = createContext(INITIAL_STATE);
 
 // auth services imports
-
 export const QueryContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(QueryReducer, INITIAL_STATE);
 

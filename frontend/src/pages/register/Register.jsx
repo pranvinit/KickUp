@@ -16,8 +16,6 @@ const Register = () => {
     }));
   };
 
-  console.log(formInput);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formInput.username || !formInput.email || !formInput.password) return;

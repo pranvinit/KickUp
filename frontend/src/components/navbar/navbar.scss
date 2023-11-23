@@ -84,6 +84,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
 
       &:hover {
         background-color: $very-light-grey;

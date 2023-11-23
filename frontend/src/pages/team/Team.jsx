@@ -11,7 +11,7 @@ const Team = () => {
       </h2>
       <div className="center">
         {TEAM.map((person) => (
-          <Person {...person} />
+          <Person {...person} key={person.name} />
         ))}
       </div>
       <h1 className="bottom">and You! ; &#41;</h1>

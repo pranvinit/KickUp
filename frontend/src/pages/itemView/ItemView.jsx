@@ -11,7 +11,6 @@ import Spinner from "react-spinner-material";
 import RatingComponent from "react-rating";
 
 import Rating from "../../components/rating/Rating";
-// import { ITEMS } from "../../mockData";
 
 const ItemView = () => {
   const cartRef = useRef();

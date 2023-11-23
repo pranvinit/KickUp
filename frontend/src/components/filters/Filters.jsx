@@ -39,16 +39,27 @@ const Filters = () => {
     dispatch(ApplyFilters(filters));
   };
 
+  // const handleColor = (i) => {
+  //   if (filters.colors?.includes(getColorByIndex(i))) {
+  //     const newColors = filters.colors.filter((c) => c !== getColorByIndex(i));
+  //     setFilters((prev) => ({ ...prev, colors: newColors }));
+  //   } else {
+  //     setFilters((prev) => ({
+  //       ...prev,
+  //       colors: [...filters.colors, getColorByIndex(i)],
+  //     }));
+  //   }
+  // };
+
   const handleColor = (i) => {
-    if (filters.colors?.includes(getColorByIndex(i))) {
-      const newColors = filters.colors.filter((c) => c !== getColorByIndex(i));
-      setFilters((prev) => ({ ...prev, colors: newColors }));
-    } else {
-      setFilters((prev) => ({
-        ...prev,
-        colors: [...filters.colors, getColorByIndex(i)],
-      }));
-    }
+    const color = getColorByIndex(i);
+    const isColorIncluded = filters.colors?.includes(color);
+
+    const newColors = isColorIncluded
+      ? filters.colors.filter((c) => c !== color)
+      : [...(filters.colors || []), color];
+
+    setFilters((prev) => ({ ...prev, colors: newColors }));
   };
 
   useEffect(() => {
